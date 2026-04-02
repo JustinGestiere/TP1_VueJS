@@ -1,0 +1,75 @@
+Table users {
+  id_users uuid [pk]
+  name varchar(50)
+  firstname varchar(50)
+  mail varchar(100) [not null, unique]
+  id_roles uuid [not null]
+  password varchar(255) [not null]
+}
+
+Table roles {
+  id_roles uuid [pk]
+  roles_name varchar(50) [not null]
+}
+
+Table users_groups {
+  id_users_groups uuid [pk]
+  id_users uuid [not null]
+  id_groups uuid [not null]
+  Indexes {                
+    (id_users, id_groups) [unique]
+  }
+}
+
+Table "groups" {
+  id_groups uuid [pk]
+  groups_name varchar(50) [not null]
+}
+
+Table groups_courses {
+  id_groups_courses uuid [pk]
+  id_groups uuid [not null]
+  id_courses uuid [not null]
+  Indexes {                
+    (id_groups, id_courses) [unique]
+  }
+}
+
+Table courses {
+  id_courses uuid [pk]
+  courses_name varchar(100) [not null]
+  id_groups uuid [not null]
+}
+
+Table contents {
+  id_contents uuid [pk]
+  id_courses uuid [not null]
+  code_correction text
+  result_correction text
+}
+
+Table learner_contents {
+  id_learner_contents uuid [pk]
+  id_contents uuid [not null]
+  result text
+  id_users uuid [not null]
+  current_contents text
+}
+
+/* Relations */
+
+Ref: users.id_roles > roles.id_roles
+
+Ref: users_groups.id_users > users.id_users
+Ref: users_groups.id_groups > "groups".id_groups
+
+Ref: groups_courses.id_groups > "groups".id_groups
+Ref: groups_courses.id_courses > courses.id_courses
+
+Ref: courses.id_groups > "groups".id_groups
+
+Ref: contents.id_courses > courses.id_courses
+
+Ref: learner_contents.id_contents > contents.id_contents
+Ref: learner_contents.id_users > users.id_users
+
