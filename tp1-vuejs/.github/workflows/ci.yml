@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: code/tp1-vuejs/frontend/package-lock.json
+      - name: Install dependencies
+        run: cd code/tp1-vuejs/frontend && npm install
+      - name: Build
+        run: cd code/tp1-vuejs/frontend && npm run build
+
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: code/tp1-vuejs/backend/package-lock.json
+      - name: Install dependencies
+        run: cd code/tp1-vuejs/backend && npm install
+      # You can add tests here:
+      # - name: Run tests
+      #   run: cd code/tp1-vuejs/backend && npm test
