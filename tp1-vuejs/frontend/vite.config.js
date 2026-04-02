@@ -4,6 +4,6 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   server: {
-    allowedHosts: ['tp1-vuejs.justingestiere.com']
-  }
+    allowedHosts: ['tp1-vuejs.justingestiere.com'],
+  },
 })
