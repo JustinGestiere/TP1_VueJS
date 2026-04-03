@@ -2,12 +2,6 @@
   <EditorLayout />
 </template>
 
-<script>
+<script setup>
 import EditorLayout from '../components/EditorLayout.vue'
-
-export default {
-  components: {
-    EditorLayout
-  }
-}
 </script>
