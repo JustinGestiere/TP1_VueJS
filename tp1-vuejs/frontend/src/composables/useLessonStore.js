@@ -3,43 +3,67 @@ import { ref } from 'vue'
 const curriculum = ref([
   {
     id: 1,
-    title: '1. Introduction to Calculus',
+    title: '1. Introduction à Python',
     expanded: true,
     lessons: [
-      { id: 11, type: 'doc',   title: '1.1 What is a Derivative?', active: true },
-      { id: 12, type: 'video', title: '1.2 Limits and Continuity' },
-      { id: 13, type: 'quiz',  title: '1.3 Module 1 Quiz' },
+      { id: 11, type: 'doc',   title: '1.1 Qu\'est-ce que Python ?', active: true },
+      { id: 12, type: 'video', title: '1.2 Installation et Configuration' },
+      { id: 13, type: 'quiz',  title: '1.3 Quiz d\'introduction' },
     ],
   },
   {
     id: 2,
-    title: '2. Integration Techniques',
+    title: '2. Les Bases de Python',
+    expanded: false,
+    lessons: [
+      { id: 21, type: 'doc',   title: '2.1 Variables et Types de Données' },
+      { id: 22, type: 'doc',   title: '2.2 Opérateurs Arithmétiques' },
+      { id: 23, type: 'video', title: '2.3 Les Chaînes de Caractères' },
+      { id: 24, type: 'quiz',  title: '2.4 Quiz sur les bases' },
+    ],
+  },
+  {
+    id: 3,
+    title: '3. Structures de Contrôle',
+    expanded: false,
+    lessons: [
+      { id: 31, type: 'doc',   title: '3.1 Conditions if/else' },
+      { id: 32, type: 'doc',   title: '3.2 Boucles for et while' },
+      { id: 33, type: 'quiz',  title: '3.3 Quiz sur les structures' },
+    ],
+  },
+  {
+    id: 4,
+    title: '4. Fonctions et Modules',
     expanded: false,
     lessons: [],
   },
 ])
 
 const activeLesson = ref(11)
-const lessonTitle   = ref('1.1 What is a Derivative?')
+const lessonTitle   = ref('1.1 Qu\'est-ce que Python ?')
 const lessonContent = ref(`
-<h2>Understanding the Basics</h2>
-<p>The <u>derivative</u> of a <u>function</u> of a real variable <u>measures</u> the
-<u>sensitivity</u> to change of the <u>function</u> value (output value) with respect
-to a change in its argument (input value). Derivatives are a fundamental tool of calculus.</p>
-<pre><code>f'(x) = lim (h→0) [f(x + h) - f(x)] / h</code></pre>
-<p>For example, the derivative of the position of a moving object with respect to time
-is the object's velocity; this measures how quickly the position of the object changes
-when time advances.</p>
+<h2>Qu'est-ce que Python ?</h2>
+<p>Python est un <u>langage de programmation</u> <u>interprété</u>, <u>multi-paradigmes</u> et <u>haut niveau</u>. 
+Créé par Guido van Rossum en 1991, Python est connu pour sa <u>syntaxe claire</u> et <u>lisible</u>.</p>
+<pre><code># Votre premier programme Python
+print("Bonjour, le monde!")
+nom = "Alice"
+âge = 25
+print(f"Je m'appelle {nom} et j'ai {âge} ans")</code></pre>
+<p>Python est utilisé dans de nombreux domaines : développement web, analyse de données, 
+intelligence artificielle, automatisation, et bien plus encore.</p>
 <ul>
-  <li>Velocity is the derivative of position.</li>
-  <li>Acceleration is the derivative of velocity.</li>
-  <li>Jerk is the derivative of acceleration.</li>
+  <li>Syntaxe simple et facile à apprendre</li>
+  <li>Grande communauté et nombreuses bibliothèques</li>
+  <li>Portable sur toutes les plateformes</li>
+  <li>Idéal pour les débutants</li>
 </ul>
-<p><em>Click here to continue writing...</em></p>
+<p><em>Continuez pour découvrir comment installer Python...</em></p>
 `)
 
 const visibility    = ref('published')
-const tags          = ref(['Calculus', 'Math'])
+const tags          = ref(['Python', 'Programmation'])
 const discussions   = ref(true)
 const prerequisites = ref('none')
 const courseStatus  = ref('draft')  // 'draft' | 'published'
@@ -61,13 +85,13 @@ function selectLesson(lesson) {
   activeLesson.value = lesson.id
   lessonTitle.value  = lesson.title
   if (lesson.type === 'quiz') {
-    lessonContent.value = '<h2>Quiz</h2><p>Add quiz questions here.</p>'
+    lessonContent.value = '<h2>Quiz</h2><p>Ajoutez des questions de quiz ici.</p>'
   } else if (lesson.type === 'video') {
-    lessonContent.value = '<h2>Video Lesson</h2><p>Embed or upload a video for this lesson.</p>'
+    lessonContent.value = '<h2>Leçon Vidéo</h2><p>Intégrez ou téléchargez une vidéo pour cette leçon.</p>'
   } else {
     lessonContent.value = `
-<h2>Understanding the Basics</h2>
-<p>Start writing your lesson content here...</p>
+<h2>Nouvelle Leçon</h2>
+<p>Commencez à rédiger le contenu de votre leçon ici...</p>
 `
   }
 }

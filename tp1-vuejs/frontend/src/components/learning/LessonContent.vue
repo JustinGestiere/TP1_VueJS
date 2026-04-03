@@ -2,39 +2,37 @@
   <main class="lesson-content">
     <!-- Course Header -->
     <div class="course-header">
-      <h1 class="course-title">Python for Data Science</h1>
-      <div class="module-info">Module 3: Data Manipulation with Pandas</div>
+      <h1 class="course-title">Introduction à Python</h1>
+      <div class="module-info">Module 1: Bases de la Programmation</div>
     </div>
 
     <!-- Tabs -->
     <div class="tabs">
       <button class="tab active">Instructions</button>
-      <button class="tab">Module List</button>
-      <button class="tab">Resources</button>
     </div>
 
     <!-- Lesson Content -->
     <div class="lesson-body">
       <div class="lesson-header">
-        <h2 class="lesson-title">LESSON 4.2 Filtering DataFrames</h2>
+        <h2 class="lesson-title">LEÇON 1.1 Variables et Calculs Simples</h2>
         <div class="lesson-description">
-          <p>Learn how to filter DataFrames in Pandas using boolean indexing to select specific rows based on conditions.</p>
+          <p>Apprenez à créer des variables et effectuer des calculs mathématiques de base en Python.</p>
         </div>
       </div>
 
       <!-- Task Section -->
       <div class="task-section">
-        <h3 class="task-title">🎯 Your Task</h3>
+        <h3 class="task-title">🎯 Votre Tâche</h3>
         <div class="task-content">
-          <p>Create a new DataFrame that contains only programming languages created after the year 2000.</p>
+          <p>Créez deux variables a et b, puis calculez leur somme et affichez le résultat.</p>
           
           <div class="task-steps">
-            <h4>Steps:</h4>
+            <h4>Étapes:</h4>
             <ol>
-              <li>Import pandas (already done)</li>
-              <li>The DataFrame <code>df</code> is pre-created with language data</li>
-              <li>Create <code>modern_languages</code> DataFrame filtering for year > 2000</li>
-              <li>Print the <code>modern_languages</code> DataFrame</li>
+              <li>Créez une variable a avec la valeur 1</li>
+              <li>Créez une variable b avec la valeur 2</li>
+              <li>Créez une variable c qui contient la somme de a et b</li>
+              <li>Affichez la valeur de c avec print()</li>
             </ol>
           </div>
         </div>
@@ -42,50 +40,14 @@
 
       <!-- Hint Section -->
       <div class="hint-section">
-        <h3 class="hint-title">💡 Hint</h3>
+        <h3 class="hint-title">💡 Indice</h3>
         <div class="hint-content">
-          <p>Use boolean indexing with Pandas:</p>
-          <pre class="code-hint">modern_languages = df[df['year'] > 2000]</pre>
+          <p>Utilisez l'opérateur + pour additionner les variables:</p>
+          <pre class="code-hint">a = 1
+b = 2
+c = a + b
+print(c)</pre>
         </div>
-      </div>
-
-      <!-- Expected Output -->
-      <div class="output-section">
-        <h3 class="output-title">📊 Expected Output</h3>
-        <div class="expected-output">
-          <table class="output-table">
-            <thead>
-              <tr>
-                <th>Language</th>
-                <th>Year</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Swift</td>
-                <td>2014</td>
-                <td>compiled</td>
-              </tr>
-              <tr>
-                <td>Go</td>
-                <td>2009</td>
-                <td>compiled</td>
-              </tr>
-              <tr>
-                <td>Rust</td>
-                <td>2010</td>
-                <td>compiled</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Navigation -->
-      <div class="lesson-navigation">
-        <button class="nav-btn prev">← Previous</button>
-        <button class="nav-btn next">Next Lesson →</button>
       </div>
     </div>
   </main>
@@ -173,7 +135,7 @@
   margin: 0;
 }
 
-.task-section, .hint-section, .output-section {
+.task-section, .hint-section {
   margin-bottom: 24px;
   padding: 20px;
   border-radius: 12px;
@@ -189,12 +151,7 @@
   border-color: #fbbf24;
 }
 
-.output-section {
-  background: #f0f9ff;
-  border-color: #3b82f6;
-}
-
-.task-title, .hint-title, .output-title {
+.task-title, .hint-title {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 12px 0;
@@ -202,7 +159,6 @@
 
 .task-title { color: #1e293b; }
 .hint-title { color: #a16207; }
-.output-title { color: #1e40af; }
 
 .task-steps h4 {
   font-size: 14px;
@@ -231,61 +187,5 @@
   font-size: 13px;
   margin: 8px 0;
   overflow-x: auto;
-}
-
-.output-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.output-table th {
-  background: #f1f5f9;
-  padding: 8px 12px;
-  text-align: left;
-  font-weight: 600;
-  color: #374151;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.output-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #f1f5f9;
-  color: #475569;
-}
-
-.lesson-navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.nav-btn {
-  padding: 10px 20px;
-  border: 1px solid #d1d5db;
-  background: white;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.nav-btn:hover {
-  background: #f8fafc;
-  border-color: #9ca3af;
-}
-
-.nav-btn.next {
-  background: #7c3aed;
-  color: white;
-  border-color: #7c3aed;
-}
-
-.nav-btn.next:hover {
-  background: #6d28d9;
-  border-color: #6d28d9;
 }
 </style>

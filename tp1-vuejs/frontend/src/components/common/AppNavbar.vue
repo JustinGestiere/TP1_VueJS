@@ -8,40 +8,37 @@
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
         </svg>
       </div>
-      <span class="logo-text">LearnX</span>
+      <span class="logo-text">GavaLab</span>
     </div>
 
     <!-- Navigation -->
     <nav class="nav-menu">
       <div class="nav-section">
-        <h3 class="nav-section-title">ENS</h3>
+        <h3 class="nav-section-title">Intervenant</h3>
         <router-link to="/course-creation" class="nav-item" :class="{ active: $route.path === '/course-creation' }">
           Création de Cours
         </router-link>
-        <router-link to="/course-list" class="nav-item" :class="{ active: $route.path === '/course-list' }">
+        <!-- <router-link class="nav-item" :class="{ active: $route.path === '/course-list' }">
           Liste des Cours
-        </router-link>
+        </router-link> -->
       </div>
       
       <div class="nav-section">
-        <h3 class="nav-section-title">ETU</h3>
+        <h3 class="nav-section-title">Apprenant</h3>
         <router-link to="/learning-workspace" class="nav-item" :class="{ active: $route.path === '/learning-workspace' }">
           Espace d'Apprentissage
         </router-link>
-        <router-link to="/course-catalog" class="nav-item" :class="{ active: $route.path === '/course-catalog' }">
-          Catalogue de Cours
-        </router-link>
       </div>
       
-      <div class="nav-section">
-        <h3 class="nav-section-title">ADM</h3>
+      <!-- <div class="nav-section">
+        <h3 class="nav-section-title">Admin</h3>
         <router-link to="/user-management" class="nav-item" :class="{ active: $route.path === '/user-management' }">
           Gestion des Utilisateurs
         </router-link>
         <router-link to="/group-management" class="nav-item" :class="{ active: $route.path === '/group-management' }">
           Gestion des Groupes
         </router-link>
-      </div>
+      </div> -->
     </nav>
 
     <!-- Footer -->

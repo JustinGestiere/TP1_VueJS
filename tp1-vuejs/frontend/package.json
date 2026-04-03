@@ -12,6 +12,12 @@
     "@guolao/vue-monaco-editor": "^1.6.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@tinymce/tinymce-vue": "^6.3.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^1.0.0",
+    "radix-vue": "^1.9.17",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss-animate": "^1.0.7",
     "vue": "^3.5.29",
     "vue-router": "^5.0.4"
   },

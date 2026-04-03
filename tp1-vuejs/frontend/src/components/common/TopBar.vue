@@ -1,13 +1,5 @@
 <template>
-  <header class="top-bar">
-    <div class="progress-section">
-      <span class="progress-label">Course Progress</span>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: 45%"></div>
-      </div>
-      <span class="progress-percentage">45%</span>
-    </div>
-    
+  <header class="top-bar">    
     <div class="user-section">
       <div class="user-info">
         <span class="user-name">Student</span>

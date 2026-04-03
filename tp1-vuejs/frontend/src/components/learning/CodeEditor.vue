@@ -1,26 +1,20 @@
 <template>
   <div class="code-editor">
-    <!-- File Tabs -->
     <div class="file-tabs">
       <div class="tab active">
         <span class="tab-name">main.py</span>
       </div>
-      <div class="tab">
-        <span class="tab-name">data.csv</span>
-      </div>
     </div>
 
-    <!-- Editor Toolbar -->
     <div class="editor-toolbar">
-      <button class="run-btn" @click="runCode">
+      <button class="run-btn" @click="runCode" :disabled="isRunning">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         </svg>
-        Run Code
+        {{ isRunning ? 'Exécution...' : 'Run Code' }}
       </button>
     </div>
 
-    <!-- Code Editor Area -->
     <div class="editor-area">
       <MonacoEditor
         v-model:value="code"
@@ -31,15 +25,9 @@
       />
     </div>
 
-    <!-- Terminal -->
     <div class="terminal">
       <div class="terminal-header">
         <span class="terminal-title">Terminal</span>
-        <div class="terminal-buttons">
-          <div class="terminal-btn close"></div>
-          <div class="terminal-btn minimize"></div>
-          <div class="terminal-btn maximize"></div>
-        </div>
       </div>
       <div class="terminal-body" ref="terminalBody">
         <div class="terminal-line">
@@ -56,31 +44,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import MonacoEditor from '@guolao/vue-monaco-editor'
 
-const code = ref(`import pandas as pd
+const code = ref(`# Créez deux variables et calculez leur somme
 
-# Create a dictionary of programming languages and their creation years
-data = {
-    'language': ['Python', 'JavaScript', 'Java', 'C++', 'Ruby', 'Go', 'Swift', 'Kotlin', 'Rust', 'TypeScript'],
-    'year': [1991, 1995, 1995, 1985, 1995, 2009, 2014, 2011, 2010, 2012],
-    'type': ['interpreted', 'interpreted', 'compiled', 'compiled', 'interpreted', 'compiled', 'compiled', 'compiled', 'compiled', 'interpreted']
-}
+# TODO: Créez la variable a avec la valeur 1
+a = 
 
-# Create a DataFrame from the dictionary
-df = pd.DataFrame(data)
+# TODO: Créez la variable b avec la valeur 2  
+b = 
 
-# TODO: Create modern_languages DataFrame (year > 2000)
-modern_languages = 
+# TODO: Calculez la somme de a et b
+c = 
 
-# TODO: Print the result
+# TODO: Affichez le résultat
 `)
 
 const terminalOutput = ref('')
 const hasError = ref(false)
 const showCursor = ref(false)
+const isRunning = ref(false)
 const terminalBody = ref(null)
+
+let observer = null
 
 const editorOptions = {
   minimap: { enabled: false },
@@ -93,61 +80,157 @@ const editorOptions = {
   tabSize: 4,
   insertSpaces: true,
   wordWrap: 'on',
-  theme: 'vs-dark'
 }
 
 function runCode() {
-  // Clear previous output
+  if (isRunning.value) return
+
   terminalOutput.value = ''
   hasError.value = false
   showCursor.value = true
-  
-  // Simulate running Python code
+  isRunning.value = true
+
   setTimeout(() => {
     try {
-      // Check if the code has the syntax error (incomplete assignment)
-      if (code.value.includes('modern_languages = ')) {
-        // Check if there's content after the assignment
-        const lines = code.value.split('\n')
-        const assignmentLine = lines.find(line => line.includes('modern_languages = '))
-        
-        if (assignmentLine && assignmentLine.trim().endsWith('modern_languages =')) {
-          terminalOutput.value = `  File "main.py", line 12
-    modern_languages = 
-                   ^
-SyntaxError: invalid syntax`
-          hasError.value = true
-        } else {
-          // Show successful output
-          terminalOutput.value = `   language  year       type
-3      Swift  2014   compiled
-4         Go  2009   compiled
-5       Rust  2010   compiled`
-        }
-      } else {
-        terminalOutput.value = 'Error: modern_languages assignment not found'
+      const lines = code.value.split('\n')
+
+      // FIX 1: regex corrigée pour détecter les assignements incomplets (a = \n)
+      const incompleteIndex = lines.findIndex(line =>
+        line.trim().match(/^[a-zA-Z_]\w*\s*=\s*$/)
+      )
+
+      if (incompleteIndex !== -1) {
+        const badLine = lines[incompleteIndex].trim()
+        terminalOutput.value = `  File "main.py", line ${incompleteIndex + 1}\n    ${badLine}\n    ^\nSyntaxError: invalid syntax`
         hasError.value = true
+      } else if (code.value.includes('print(')) {
+        const variables = {}
+
+        for (const line of lines) {
+          const trimmed = line.trim()
+          if (!trimmed || trimmed.startsWith('#')) continue
+
+          // Assignement simple : varName = expression
+          const assignMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/)
+          if (assignMatch) {
+            const varName = assignMatch[1]
+            // Retirer les commentaires inline
+            const rawValue = assignMatch[2].replace(/\s*#.*$/, '').trim()
+            variables[varName] = evaluateExpression(rawValue, variables)
+          }
+        }
+
+        // FIX 4: support print multi-arguments print(a, b, c)
+        const printRegex = /print\(([^)]*)\)/g
+        const outputs = []
+        let match
+
+        while ((match = printRegex.exec(code.value)) !== null) {
+          const args = splitArgs(match[1])
+          const parts = args.map(arg => {
+            const val = evaluateExpression(arg.trim(), variables)
+            return val !== null && val !== undefined ? String(val) : 'None'
+          })
+          outputs.push(parts.join(' '))
+        }
+
+        terminalOutput.value = outputs.length
+          ? outputs.join('\n')
+          : 'Code exécuté sans affichage. Ajoutez print() pour voir les résultats.'
+      } else {
+        terminalOutput.value = 'Code exécuté! Ajoutez print() pour voir les résultats.'
       }
     } catch (error) {
-      terminalOutput.value = error.message
+      terminalOutput.value = `RuntimeError: ${error.message}`
       hasError.value = true
     }
-    
+
     showCursor.value = false
+    isRunning.value = false
   }, 1000)
 }
 
+// Sépare les arguments d'un appel de fonction en respectant les strings
+function splitArgs(argsStr) {
+  const args = []
+  let current = ''
+  let depth = 0
+  let inString = false
+  let stringChar = ''
+
+  for (const ch of argsStr) {
+    if (inString) {
+      current += ch
+      if (ch === stringChar) inString = false
+    } else if (ch === '"' || ch === "'") {
+      inString = true
+      stringChar = ch
+      current += ch
+    } else if (ch === '(' || ch === '[') {
+      depth++
+      current += ch
+    } else if (ch === ')' || ch === ']') {
+      depth--
+      current += ch
+    } else if (ch === ',' && depth === 0) {
+      args.push(current)
+      current = ''
+    } else {
+      current += ch
+    }
+  }
+  if (current.trim()) args.push(current)
+  return args
+}
+
+function evaluateExpression(expr, variables) {
+  expr = expr.trim()
+
+  // String literals
+  if ((expr.startsWith('"') && expr.endsWith('"')) ||
+      (expr.startsWith("'") && expr.endsWith("'"))) {
+    return expr.slice(1, -1)
+  }
+
+  // FIX 2: retourner un Number et non une string pour les entiers/flottants
+  if (/^-?\d+(\.\d+)?$/.test(expr)) {
+    return Number(expr)
+  }
+
+  // Remplacer les variables par leurs valeurs
+  let evaluated = expr
+  // FIX 3: éviter les bugs de regex stateful avec .test() + flag g
+  for (const [key, value] of Object.entries(variables)) {
+    const regex = new RegExp(`(?<![a-zA-Z_\\d])${key}(?![a-zA-Z\\d_])`, 'g')
+    const replacement = typeof value === 'string' ? `"${value}"` : String(value)
+    evaluated = evaluated.replace(regex, replacement)
+  }
+
+  // Évaluation de l'expression finale
+  try {
+    // eslint-disable-next-line no-eval
+    const result = eval(evaluated)
+    return result
+  } catch {
+    return evaluated
+  }
+}
+
 onMounted(() => {
-  // Auto-scroll terminal to bottom
-  const observer = new MutationObserver(() => {
+  // FIX 5: cleanup de l'observer dans onUnmounted
+  observer = new MutationObserver(() => {
     if (terminalBody.value) {
       terminalBody.value.scrollTop = terminalBody.value.scrollHeight
     }
   })
-  
+
   if (terminalBody.value) {
     observer.observe(terminalBody.value, { childList: true, subtree: true })
   }
+})
+
+onUnmounted(() => {
+  observer?.disconnect()
 })
 </script>
 
@@ -179,14 +262,8 @@ onMounted(() => {
   transition: background 0.2s ease;
 }
 
-.tab:hover {
-  background: #3e3e42;
-}
-
-.tab.active {
-  background: #1e1e1e;
-  color: #ffffff;
-}
+.tab:hover { background: #3e3e42; }
+.tab.active { background: #1e1e1e; color: #ffffff; }
 
 .tab-name {
   font-family: 'Monaco', 'Menlo', monospace;
@@ -216,9 +293,8 @@ onMounted(() => {
   transition: background 0.2s ease;
 }
 
-.run-btn:hover {
-  background: #2ea043;
-}
+.run-btn:hover:not(:disabled) { background: #2ea043; }
+.run-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .editor-area {
   flex: 1;
@@ -248,21 +324,6 @@ onMounted(() => {
   font-weight: 500;
 }
 
-.terminal-buttons {
-  display: flex;
-  gap: 6px;
-}
-
-.terminal-btn {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.terminal-btn.close { background: #ff5f56; }
-.terminal-btn.minimize { background: #ffbd2e; }
-.terminal-btn.maximize { background: #27c93f; }
-
 .terminal-body {
   flex: 1;
   padding: 12px;
@@ -279,14 +340,7 @@ onMounted(() => {
   margin-bottom: 4px;
 }
 
-.terminal-prompt {
-  color: #238636;
-  margin-right: 8px;
-}
-
-.terminal-command {
-  color: #cccccc;
-}
+.terminal-prompt { color: #238636; margin-right: 8px; }
 
 .terminal-output {
   margin: 8px 0;
@@ -295,9 +349,7 @@ onMounted(() => {
   font-size: 12px;
 }
 
-.terminal-output.error {
-  color: #ff5f56;
-}
+.terminal-output.error { color: #ff5f56; }
 
 .terminal-cursor {
   display: inline-block;

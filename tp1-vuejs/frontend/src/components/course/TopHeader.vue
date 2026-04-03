@@ -1,51 +1,49 @@
 <template>
   <header class="header">
     <div class="left">
-      <button class="icon-btn" title="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
-      </button>
-      <span class="course-title">Advanced Mathematics</span>
-      <span class="status-badge" :class="courseStatus">
+      <Button variant="ghost" size="icon" title="Retour">
+        <ArrowLeft class="w-4 h-4" />
+      </Button>
+      <span class="course-title">Base Python</span>
+      <Badge :variant="courseStatus === 'published' ? 'default' : 'secondary'">
         {{ courseStatus === 'published' ? 'Publié' : 'Brouillon' }}
-      </span>
+      </Badge>
     </div>
 
     <div class="right">
-      <transition name="fade">
+      <Transition name="fade">
         <span v-if="saveMessage" class="save-msg">{{ saveMessage }}</span>
-      </transition>
+      </Transition>
 
-      <button class="btn-preview">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-        </svg>
+      <Button variant="outline" size="sm">
+        <Eye class="w-4 h-4" />
         Aperçu
-      </button>
+      </Button>
 
-      <button class="btn-draft" @click="saveDraft">
+      <Button variant="secondary" size="sm" @click="saveDraft">
         Enregistrer comme Brouillon
-      </button>
+      </Button>
 
-      <button class="btn-publish" @click="publishCourse">
+      <Button @click="publishCourse">
         Publier le Cours
-      </button>
+      </Button>
     </div>
   </header>
 </template>
 
 <script setup>
 import { useLessonStore } from '../../composables/useLessonStore.js'
-const { courseStatus, saveMessage, publishCourse } = useLessonStore()
+import Button from '../ui/Button.vue'
+import Badge from '../ui/Badge.vue'
+import { ArrowLeft, Eye } from 'lucide-vue-next'
+
+const { courseStatus, saveMessage, saveDraft, publishCourse } = useLessonStore()
 </script>
 
 <style scoped>
 .header {
   height: 60px;
-  background: #fff;
+  background: white;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
@@ -53,48 +51,41 @@ const { courseStatus, saveMessage, publishCourse } = useLessonStore()
   padding: 0 24px;
   flex-shrink: 0;
 }
-.left { display: flex; align-items: center; gap: 10px; }
-.right { display: flex; align-items: center; gap: 10px; }
 
-.icon-btn {
-  background: none; border: none; cursor: pointer;
-  color: #6b7280; padding: 4px; border-radius: 6px;
-  display: flex; align-items: center;
+.left { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
 }
-.icon-btn:hover { background: #f3f4f6; }
 
-.course-title { font-weight: 600; font-size: 15px; }
-
-.status-badge {
-  font-size: 11px; padding: 2px 10px; border-radius: 20px;
-  font-weight: 600; letter-spacing: 0.3px;
+.right { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
 }
-.status-badge.draft       { background: #f3f4f6; color: #6b7280; }
-.status-badge.published   { background: #dcfce7; color: #16a34a; }
+
+.course-title { 
+  font-weight: 600; 
+  font-size: 15px;
+  color: #111827;
+}
 
 .save-msg {
-  font-size: 13px; color: #16a34a; font-weight: 500;
-  padding: 4px 10px; background: #dcfce7; border-radius: 8px;
+  font-size: 13px; 
+  color: #7c3aed; 
+  font-weight: 500;
+  padding: 4px 10px; 
+  background: #f5f3ff; 
+  border-radius: 8px;
+  border: 1px solid #e9d5ff;
 }
-
-.btn-preview {
-  display: flex; align-items: center; gap: 6px;
-  border: 1px solid #e5e7eb; background: #fff;
-  padding: 6px 16px; border-radius: 8px;
-  cursor: pointer; font-weight: 500; font-size: 14px;
-}
-.btn-preview:hover { background: #f9fafb; }
-
-.btn-publish {
-  background: #7c3aed; color: #fff;
-  padding: 6px 18px; border-radius: 8px;
-  border: none; cursor: pointer;
-  font-weight: 600; font-size: 14px;
-  transition: background 0.15s;
-}
-.btn-publish:hover { background: #6d28d9; }
 
 /* Transition */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
+.fade-enter-active, .fade-leave-active { 
+  transition: opacity 0.3s; 
+}
+
+.fade-enter-from, .fade-leave-to { 
+  opacity: 0; 
+}
 </style>
