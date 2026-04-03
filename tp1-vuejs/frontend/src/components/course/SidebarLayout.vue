@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout">
-    <SidebarNav />
+    <AppNavbar />
     <div class="page-content">
       <router-view />
     </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import SidebarNav from '../components/SidebarNav.vue'
+import AppNavbar from '../common/AppNavbar.vue'
 </script>
 
 <style scoped>

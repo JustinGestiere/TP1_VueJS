@@ -11,7 +11,7 @@
 
 <script setup>
 import TopHeader         from './TopHeader.vue'
-import CurriculumSidebar from './CurriculumSidebar.vue'
+import CurriculumSidebar from './CurriculumSideBar.vue'
 import LessonEditor      from './LessonEditor.vue'
 import SettingsPanel     from './SettingsPanel.vue'
 </script>

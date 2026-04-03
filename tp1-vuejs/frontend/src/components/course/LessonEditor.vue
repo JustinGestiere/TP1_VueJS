@@ -12,7 +12,7 @@
 
 <script setup>
 import RichTextEditor from './RichTextEditor.vue'
-import { useLessonStore } from '../composables/useLessonStore.js'
+import { useLessonStore } from '../../composables/useLessonStore.js'
 
 const { lessonTitle, lessonContent } = useLessonStore()
 </script>

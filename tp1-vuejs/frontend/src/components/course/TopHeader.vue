@@ -9,7 +9,7 @@
       </button>
       <span class="course-title">Advanced Mathematics</span>
       <span class="status-badge" :class="courseStatus">
-        {{ courseStatus === 'published' ? 'Published' : 'Draft' }}
+        {{ courseStatus === 'published' ? 'Publié' : 'Brouillon' }}
       </span>
     </div>
 
@@ -23,18 +23,22 @@
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
         </svg>
-        Preview
+        Aperçu
+      </button>
+
+      <button class="btn-draft" @click="saveDraft">
+        Enregistrer comme Brouillon
       </button>
 
       <button class="btn-publish" @click="publishCourse">
-        Publish Course
+        Publier le Cours
       </button>
     </div>
   </header>
 </template>
 
 <script setup>
-import { useLessonStore } from '../composables/useLessonStore.js'
+import { useLessonStore } from '../../composables/useLessonStore.js'
 const { courseStatus, saveMessage, publishCourse } = useLessonStore()
 </script>
 

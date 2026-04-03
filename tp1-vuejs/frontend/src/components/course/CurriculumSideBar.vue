@@ -71,7 +71,7 @@
 
 <script setup>
 import { ref, nextTick } from 'vue'
-import { useLessonStore } from '../composables/useLessonStore.js'
+import { useLessonStore } from '../../composables/useLessonStore.js'
 
 const { curriculum, activeLesson, toggleModule, selectLesson, addModule, addLesson } = useLessonStore()
 

@@ -1,12 +1,12 @@
 <template>
   <aside class="settings">
-    <div class="settings-header">Lesson Settings</div>
+    <div class="settings-header">Paramètres de la Leçon</div>
 
     <div class="settings-body">
 
       <!-- Visibility -->
       <section>
-        <p class="section-title">Visibility</p>
+        <p class="section-title">Visibilité</p>
         <label
           v-for="opt in visibilityOptions"
           :key="opt.val"
@@ -23,9 +23,9 @@
 
       <!-- Prerequisites -->
       <section>
-        <p class="section-title">Prerequisites</p>
+        <p class="section-title">Prérequis</p>
         <select v-model="prerequisites" class="select-input">
-          <option value="none">None required</option>
+          <option value="none">Aucun requis</option>
           <option
             v-for="lesson in allLessons"
             :key="lesson.id"
@@ -54,7 +54,7 @@
         <input
           v-model="tagInput"
           class="tag-input"
-          placeholder="Add a tag…"
+          placeholder="Ajouter un tag…"
           @keydown.enter.prevent="onAddTag"
           @keydown.exact="checkComma"
         />
@@ -63,7 +63,7 @@
       <!-- Discussions toggle -->
       <section>
         <div class="toggle-row">
-          <p class="section-title" style="margin-bottom: 0">Enable Discussions</p>
+          <p class="section-title" style="margin-bottom: 0">Activer les Discussions</p>
           <button
             class="toggle"
             :class="{ on: discussions }"
@@ -72,22 +72,22 @@
             <div class="toggle-knob" />
           </button>
         </div>
-        <p class="toggle-sub">Allow students to comment and ask questions on this lesson.</p>
+        <p class="toggle-sub">Permettre aux étudiants de commenter et poser des questions sur cette leçon.</p>
       </section>
 
     </div>
 
     <!-- Footer actions -->
     <div class="settings-footer">
-      <button class="btn-draft" @click="saveDraft">Save as Draft</button>
-      <button class="btn-update" @click="updateLesson">Update Lesson</button>
+      <button class="btn-draft" @click="saveDraft">Enregistrer comme Brouillon</button>
+      <button class="btn-update" @click="updateLesson">Mettre à Jour la Leçon</button>
     </div>
   </aside>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useLessonStore } from '../composables/useLessonStore.js'
+import { useLessonStore } from '../../composables/useLessonStore.js'
 
 const {
   curriculum, visibility, tags, discussions,
@@ -97,9 +97,9 @@ const {
 const tagInput = ref('')
 
 const visibilityOptions = [
-  { val: 'published', label: 'Published',  sub: 'Visible to all enrolled students' },
-  { val: 'draft',     label: 'Draft',      sub: 'Only visible to instructors' },
-  { val: 'scheduled', label: 'Scheduled',  sub: 'Publish on a specific date' },
+  { val: 'published', label: 'Publié',  sub: 'Visible par tous les étudiants inscrits' },
+  { val: 'draft',     label: 'Brouillon',      sub: 'Visible uniquement par les instructeurs' },
+  { val: 'scheduled', label: 'Programmé',  sub: 'Publier à une date spécifique' },
 ]
 
 const allLessons = computed(() =>
